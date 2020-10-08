@@ -42,45 +42,46 @@
 </template>
 
 <script lang="ts">
-    // import {Options, Vue} from 'vue-class-component'
-    import {
-        defineComponent, computed, onMounted, onUpdated, onUnmounted,
-    } from 'vue';
-    import { useStore } from 'vuex';
-    export default defineComponent({
-        name: 'hello world',
-        props: {
-            msg: String
-        },
-        setup(props, context) {
-            console.log('lalal', props, context)
-            const store = useStore();
-            const title = computed(() => store.state.title);
+  // import {Options, Vue} from 'vue-class-component'
+  import {
+    defineComponent, computed, onMounted, onUpdated, onUnmounted,
+  } from 'vue';
+  import {useStore} from 'vuex';
 
-            const setTitle = (nextTitle: string): void => {
-                store.commit('setTitle', nextTitle);
-            };
-            const nextTickSetTitle = async (nextTitle: string): Promise<void> => {
-                await store.dispatch('nextTickSetTitle', nextTitle);
-            };
+  export default defineComponent({
+    name: 'hello world',
+    props: {
+      msg: String
+    },
+    setup(props, context) {
+      console.log('lalal', props, context)
+      const store = useStore();
+      const title = computed(() => store.state.title);
 
-            onMounted(() => {
-                console.log('onMounted')
-            })
-            onUpdated(() => {
-                console.log('onUpdated')
-            })
-            onUnmounted(() => {
-                console.log('onUnmounted')
-            })
+      const setTitle = (nextTitle: string): void => {
+        store.commit('setTitle', nextTitle);
+      };
+      const nextTickSetTitle = async (nextTitle: string): Promise<void> => {
+        await store.dispatch('nextTickSetTitle', nextTitle);
+      };
 
-            return {
-                title,
-                setTitle,
-                nextTickSetTitle
-            }
-        },
-    })
+      onMounted(() => {
+        console.log('onMounted')
+      })
+      onUpdated(() => {
+        console.log('onUpdated')
+      })
+      onUnmounted(() => {
+        console.log('onUnmounted')
+      })
+
+      return {
+        title,
+        setTitle,
+        nextTickSetTitle
+      }
+    },
+  })
 </script>
 
 
