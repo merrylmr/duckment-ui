@@ -1,30 +1,34 @@
-import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router'
-// import Home from '../views/Home.vue'
+import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 
-const Editor = () => import(/* webpackChunkName: "editor" */ '../views/Editor.vue');
+const Home = import(/* webpackChunkName: "about" */ '../views/Home.vue')
+const Dashboard = import(/* webpackChunkName: "manage" */ '../views/manage/Dashboard.vue')
+const Editor = import(/* webpackChunkName: "edit" */ '../views/edit/Editor.vue')
+const createIndex = import(/* webpackChunkName: "edit" */ '../views/create/Index.vue')
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        name: 'Home',
-        component: Editor
+        name: 'home',
+        component: Home
     },
     {
-        path: '/editor',
+        path: '/site/:id',
+        name: "dashboard",
+        component: Dashboard,
+    },
+    {
+        path: "/site/:id/content/:contentId",
         name: 'editor',
-        component: Editor
+        component: Editor,
     },
     {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
+        path: "/create",
+        name: 'createSite',
+        component: createIndex,
+    },
 ]
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes
 })
 
