@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: "/site/:id/content/:contentId",
-        name: 'editor',
+        name: 'content',
         component: Editor,
     },
     {

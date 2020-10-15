@@ -17,7 +17,7 @@
   .app-header {
     width: 100%;
     height: 60px;
-    background-color: rgb(254, 250, 230);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .08);
     /*border-bottom: 1px solid rgba(48, 48, 48, 0.08);*/
 
     .logo {
@@ -31,5 +31,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+</style>
+
+<style lang="scss">
+  .vditor {
+    border: none;
   }
 </style>
