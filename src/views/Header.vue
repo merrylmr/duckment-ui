@@ -23,6 +23,12 @@
     .logo {
       width: 100px;
     }
+
+    &.xl {
+      .app-header__wrapper {
+        max-width: 1800px;
+      }
+    }
   }
 
   .app-header__wrapper {
@@ -31,6 +37,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+
   }
 </style>
 

@@ -8,7 +8,7 @@ import store from './store'
 import './assets/scss/index.scss'
 
 import ElementPlus from 'element-plus'
-import 'element-plus/lib/theme-chalk/index.css'
+// import 'element-plus/lib/theme-chalk/index.css'
 import zzElement from  './components/index'
 import    './components/theme-chalk/index.scss'
 // vditor.css

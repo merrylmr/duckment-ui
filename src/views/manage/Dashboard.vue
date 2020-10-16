@@ -1,5 +1,5 @@
 <template>
-  <Header></Header>
+  <Header class="xl"></Header>
   <div class="main">
     <div class="left-sidebar">
       <zz-menu>
