@@ -146,6 +146,7 @@
                     "height": 500, // 必须设置，否则点击大纲无法跳转
                     placeholder: '请输入内容详情',
                     value: '',
+                    mode: 'wysiwyg'
                 })
             }
             // const renderOutline = (): void => {
