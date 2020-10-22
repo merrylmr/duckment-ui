@@ -75,8 +75,7 @@
     import {defineComponent, onMounted, ref} from 'vue'
     import {useRouter} from 'vue-router'
     import Vditor from 'vditor'
-
-    // import outlineRender from 'vditor/dist/method.min'
+    // import VditorPreview from 'vditor/dist/method.min'
     interface Tool {
         label: string;
         value: string;
@@ -85,7 +84,7 @@
     export default defineComponent({
         setup() {
             const router = useRouter()
-            let editor: any
+            let editor: Vditor
             const funItems: Tool[] = [
                 {
                     label: "大纲",
@@ -149,13 +148,18 @@
                     mode: 'wysiwyg'
                 })
             }
-            // const renderOutline = (): void => {
-            // }
+            const renderOutline = (): void => {
+                const outline = document.getElementById('outline')
+                const editor = document.querySelector('#editor .vditor-reset')
+                // outlineRender(editor, outline)
+            }
             const switchFuc = (item: Tool): void => {
                 activeFnc.value = item.value
+                renderOutline()
             }
             onMounted(() => {
                 editorInit()
+                console.log('outlineRender', editor)
             })
             return {
                 activeFnc,
