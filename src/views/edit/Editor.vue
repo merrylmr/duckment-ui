@@ -2,10 +2,11 @@
   <div class="edit-header">
     <div class="edit-header__wrapper">
       <div class="edit-header--left">
-        <img src="/img/logo.png" alt="duckment" height="40">
+        <a href="/">
+          <img src="/img/logo.png" alt="duckment" height="40">
+        </a>
         <div class="doc-name">文档名</div>
       </div>
-
     </div>
 
   </div>
@@ -48,24 +49,28 @@
       </div>
       <div class="right-sidebar__wrapper">
         <div class="right-sidebar__body">
-          <div id="outline">
+          <el-scrollbar style="calc(100vh -100px)">
+            <div id="outline"
+                 v-show="activeFnc==='outline'">
 
-          </div>
-          <el-form class="settings"
-                   v-show="activeFnc==='attr'">
-            <el-form-item label="标题">
-              <el-input placeholder="请输入标题"></el-input>
-            </el-form-item>
-            <el-form-item label="简介">
-              <el-input placeholder="请输入简介"></el-input>
-            </el-form-item>
-            <el-form-item label="URL">
-              <el-input placeholder="请输入URL"></el-input>
-            </el-form-item>
-            <el-form-item label="布局">
-              <el-input placeholder="请选择布局"></el-input>
-            </el-form-item>
-          </el-form>
+            </div>
+            <el-form class="settings"
+                     v-show="activeFnc==='attr'">
+              <el-form-item label="标题">
+                <el-input placeholder="请输入标题"></el-input>
+              </el-form-item>
+              <el-form-item label="简介">
+                <el-input placeholder="请输入简介"></el-input>
+              </el-form-item>
+              <el-form-item label="URL">
+                <el-input placeholder="请输入URL"></el-input>
+              </el-form-item>
+              <el-form-item label="布局">
+                <el-input placeholder="请选择布局"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-scrollbar>
+
         </div>
       </div>
     </div>
@@ -75,6 +80,7 @@
     import {defineComponent, onMounted, ref} from 'vue'
     import {useRouter} from 'vue-router'
     import Vditor from 'vditor'
+
     // import VditorPreview from 'vditor/dist/method.min'
     interface Tool {
         label: string;
@@ -150,8 +156,9 @@
             }
             const renderOutline = (): void => {
                 const outline = document.getElementById('outline')
-                const editor = document.querySelector('#editor .vditor-reset')
-                // outlineRender(editor, outline)
+                const contentHtml = document.querySelector('.vditor-reset')
+                console.log('editor', contentHtml)
+                Vditor.outlineRender(contentHtml as HTMLElement, outline)
             }
             const switchFuc = (item: Tool): void => {
                 activeFnc.value = item.value
@@ -159,7 +166,7 @@
             }
             onMounted(() => {
                 editorInit()
-                console.log('outlineRender', editor)
+                console.log('outlineRender', editor, Vditor.outlineRender)
             })
             return {
                 activeFnc,
