@@ -115,7 +115,6 @@
     max-width: 1200px;
     margin: 50px auto 0 auto;
   }
-
   .scene-list {
     margin-top: 20px;
     display: flex;
