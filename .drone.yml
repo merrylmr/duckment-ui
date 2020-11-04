@@ -2,6 +2,9 @@ kind: pipeline
 type: docker
 name: duckment-ui
 
+workspace:
+  path: /drone/src/${DRONE_REPO_NAME}
+
 clone:
   disable: true
 
@@ -9,18 +12,52 @@ steps:
   - name: clone
     image: plugins/git
     pull: if-not-exists
+    privileged: true
+    volumes:
+      - name: git-cache
+        path: /drone/src/${DRONE_REPO_NAME}/.git
 
   - name: install
     image: node:10-alpine3.11
     pull: if-not-exists
+    privileged: true
+    volumes:
+      - name: node-modules
+        path: /drone/src/${DRONE_REPO_NAME}/node_modules
+      - name: yarn-cache
+        path: /usr/local/share/.cache/yarn
     commands:
       - yarn
 
   - name: build
     image: node:10-alpine3.11
     pull: if-not-exists
+    privileged: true
+    volumes:
+      - name: node-modules
+        path: /drone/src/${DRONE_REPO_NAME}/node_modules
     commands:
       - yarn build
     when:
       branch:
         - develop
+
+volumes:
+  - name: git-cache
+    host:
+      path: /workspace/ci-volumes/git/${DRONE_REPO_NAME}/.git
+  - name: gopath
+    host:
+      path: /workspace/ci-volumes/gopath
+  - name: go-build-cache
+    host:
+      path: /workspace/ci-volumes/go_build_cache
+  - name: node-modules
+    host:
+      path: /workspace/ci-volumes/node_modules/${DRONE_REPO_NAME}.${DRONE_BRANCH}
+  - name: yarn-cache
+    host:
+      path: /workspace/ci-volumes/yarn-cache
+  - name: netrc # for `go get go.zhuzi.me/go`
+    host:
+      path: /workspace/ci-volumes/netrc_ext
