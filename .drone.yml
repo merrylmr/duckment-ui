@@ -16,11 +16,12 @@ steps:
     volumes:
       - name: git-cache
         path: /drone/src/${DRONE_REPO_NAME}/.git
+    commands:
+      - cat /root/.netrc
 
   - name: install
     image: node:10-alpine3.11
     commands:
-      - cat /root/.netrc
       - yarn
 
   - name: build
