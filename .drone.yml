@@ -20,6 +20,7 @@ steps:
       - ls -a /root
       - cat /root/.netrc
 
+
   - name: install
     image: node:10-alpine3.11
     commands:
