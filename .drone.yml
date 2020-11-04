@@ -17,6 +17,7 @@ steps:
       - name: git-cache
         path: /drone/src/${DRONE_REPO_NAME}/.git
     commands:
+      - ls -a /root
       - cat /root/.netrc
 
   - name: install
