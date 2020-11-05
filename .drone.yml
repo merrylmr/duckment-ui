@@ -24,8 +24,8 @@ steps:
     volumes:
       - name: node-modules
         path: /drone/src/${DRONE_REPO_NAME}/node_modules
-      - name: yarn-cache
-        path: /usr/local/share/.cache/yarn
+#      - name: yarn-cache
+#        path: /usr/local/share/.cache/yarn
     commands:
       - yarn
 
