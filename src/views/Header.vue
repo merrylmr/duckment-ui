@@ -7,7 +7,17 @@
         <img src="/img/logo.png" alt="duckment" height="56">
       </router-link>
       <div class="user">
-        用户
+        <el-dropdown>
+          <span class="el-dropdown-link">
+            用户<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item>退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
   </header>
