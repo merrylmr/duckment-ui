@@ -21,7 +21,7 @@
          v-if="step===1">
       <div class="scene-item">
         <div class="scene-item__thumbnail">
-          <i class="el-icon-s-order"></i>
+          <img src="/img/rep.png" alt="">
         </div>
         <div class="scene-item__desc">
           文档
@@ -37,7 +37,7 @@
       </div>
       <div class="scene-item">
         <div class="scene-item__thumbnail">
-          <i class="el-icon-s-custom"></i>
+          <img src="/img/blog.png" width="80" alt="">
         </div>
         <div class="scene-item__desc">
           Blog
@@ -52,7 +52,6 @@
       </div>
     </div>
     <div class="choose-tpl" v-else-if="step===2">
-      <h3 class="title">选择模板</h3>
       <el-row class="tpl-list" :gutter="20">
         <el-col class="tpl-item"
                 v-for="i in 10"
@@ -88,8 +87,10 @@
         <el-button round type="primary" @click="toNext">下一步</el-button>
       </div>
     </div>
-    <div v-else>
-      4
+    <div class="site-complete" v-else>
+      <div>
+        <img src="/img/success1.png" width="400" alt="">
+      </div>
       <div>
         <el-button
           round
@@ -142,7 +143,7 @@
     margin: 50px auto 0 auto;
   }
   .scene-list {
-    margin-top: 20px;
+    margin-top: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -151,7 +152,7 @@
   .scene-item {
     width: 300px;
     height: 400px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #ebeef5;
     margin-right: 40px;
     display: flex;
     align-items: center;
@@ -159,11 +160,19 @@
     justify-content: center;
     padding: 10px;
     cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    }
   }
 
   .scene-item__thumbnail {
     text-align: center;
     height: 200px;
+
+    img {
+      width: 100%;
+    }
 
     i {
       font-size: 64px;
@@ -240,5 +249,9 @@
     display: flex;
     padding: 10px;
     justify-content: space-between;
+  }
+
+  .site-complete {
+    text-align: center;
   }
 </style>
