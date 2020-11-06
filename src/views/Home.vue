@@ -33,9 +33,9 @@
 
 <script lang="ts">
     import Header from './Header.vue'
-    import {defineComponent} from 'vue'
+    import {defineComponent, onMounted} from 'vue'
     import {useRouter} from 'vue-router'
-
+    import {getProject} from '@/api/index.js'
     interface Site {
         id: number;
         name: string;
@@ -47,23 +47,28 @@
         components: {Header},
         setup(props, context) {
 
-            const router = useRouter()
+          const router = useRouter()
 
-            const siteList: Site[] = [
-                {
-                    id: 1,
-                    name: 'test',
-                    thumbnail: '/img/logo.png'
-                },
-            ]
-            const goSiteDetail = (id: number) => {
-                console.log('context', context, id)
-                router.push({name: 'dashboard', params: {id: id}})
-            }
-            return {
-                siteList,
-                goSiteDetail
-            }
+          const siteList: Site[] = [
+            {
+              id: 1,
+              name: 'test',
+              thumbnail: '/img/logo.png'
+            },
+          ]
+          const goSiteDetail = (id: number) => {
+            console.log('context', context, id)
+            router.push({name: 'dashboard', params: {id: id}})
+          }
+
+          onMounted(async () => {
+            const res = await getProject()
+            console.log('res', res)
+          })
+          return {
+            siteList,
+            goSiteDetail
+          }
         }
     })
 </script>
