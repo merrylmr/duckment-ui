@@ -42,6 +42,77 @@ steps:
       branch:
         - develop
 
+  - name: publish-prod
+    image: plugins/docker
+    pull: if-not-exists
+    settings:
+      mirror: https://c3s8qqv3.mirror.aliyuncs.com
+      registry: registry.cn-hangzhou.aliyuncs.com
+      repo: registry.cn-hangzhou.aliyuncs.com/bysir/${DRONE_REPO_NAME}
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags:
+        - latest
+    when:
+      branch: master
+
+  - name: publish-dev
+    image: plugins/docker
+    pull: if-not-exists
+    settings:
+      mirror: https://c3s8qqv3.mirror.aliyuncs.com
+      registry: registry.cn-hangzhou.aliyuncs.com
+      repo: registry.cn-hangzhou.aliyuncs.com/bysir/${DRONE_REPO_NAME}
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags:
+        - develop
+    when:
+      branch: develop
+
+  - name: rancher-prod
+    image: peloton/drone-rancher
+    pull: if-not-exists
+    settings:
+      access_key:
+        from_secret: rancher_access_key
+      secret_key:
+        from_secret: rancher_secret_key
+      url: http://rancher.bysir.top:1080/v1
+      service: duckment/${DRONE_REPO_NAME}
+      docker_image: registry.cn-hangzhou.aliyuncs.com/bysir/${DRONE_REPO_NAME}:latest
+      start_first: true
+      confirm: true
+      timeout: 100
+    when:
+      branch: master
+
+  - name: rancher-dev
+    image: peloton/drone-rancher
+    pull: if-not-exists
+    settings:
+      access_key:
+        from_secret: rancher_access_key
+      secret_key:
+        from_secret: rancher_secret_key
+      url: http://rancher.bysit.top:1080/v1
+      service: duckment/${DRONE_REPO_NAME}
+      docker_image: registry.cn-hangzhou.aliyuncs.com/bysir/${DRONE_REPO_NAME}:develop
+      start_first: true
+      confirm: true
+      timeout: 100
+    when:
+      branch: develop
+
+trigger:
+  branch:
+    - master
+    - develop
+
 volumes:
   - name: git-cache
     host:
