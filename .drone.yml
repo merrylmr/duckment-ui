@@ -24,8 +24,8 @@ steps:
     volumes:
       - name: node-modules
         path: /drone/src/${DRONE_REPO_NAME}/node_modules
-#      - name: yarn-cache
-#        path: /usr/local/share/.cache/yarn
+      - name: yarn-cache
+        path: /usr/local/share/.cache/yarn
     commands:
       - yarn
 
@@ -99,7 +99,7 @@ steps:
         from_secret: rancher_access_key
       secret_key:
         from_secret: rancher_secret_key
-      url: http://rancher.bysit.top:1080/v1
+      url: http://rancher.bysir.top:1080/v1
       service: duckment/${DRONE_REPO_NAME}
       docker_image: registry.cn-hangzhou.aliyuncs.com/bysir/${DRONE_REPO_NAME}:develop
       start_first: true
