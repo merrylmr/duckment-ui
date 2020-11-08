@@ -19,32 +19,18 @@
     </div>
     <div class="scene-list"
          v-if="step===1">
-      <div class="scene-item">
+      <div class="scene-item"
+           v-for="(item,index) in docTypeList"
+           :key="index">
         <div class="scene-item__thumbnail">
-          <img src="/img/rep.png" alt="">
+          <img :src="item.thumbnail" alt="">
         </div>
         <div class="scene-item__desc">
-          文档
+          {{item.label}}
         </div>
         <div class="scene-item__btn">
           <el-button
-            @click="toNext"
-            type="primary"
-            round>选择
-          </el-button>
-        </div>
-
-      </div>
-      <div class="scene-item">
-        <div class="scene-item__thumbnail">
-          <img src="/img/blog.png" width="80" alt="">
-        </div>
-        <div class="scene-item__desc">
-          Blog
-        </div>
-        <div class="scene-item__btn">
-          <el-button
-            @click="toNext"
+            @click="selectedType(item)"
             type="primary"
             round>选择
           </el-button>
@@ -54,21 +40,22 @@
     <div class="choose-tpl" v-else-if="step===2">
       <el-row class="tpl-list" :gutter="20">
         <el-col class="tpl-item"
-                v-for="i in 10"
+                v-for="(item,i) in ThemeList"
                 :key="i"
                 :span="6">
           <div class="tpl-item__inner">
             <div class="tpl-item__thumbnail">
-              <img src="https://www.baklib.com/templates/help-scout/1/assets/images/1200x750.png" alt="">
+              <img
+                :src="item.thumbnail" alt="">
             </div>
             <div class="tpl-item__info">
               <div class="tpl-item__name">
-                模板名称
+                {{item.name}}
               </div>
               <div class="tpl-item__choose">
                 <el-button
                   type="primary"
-                  @click="toNext"
+                  @click="selectedTheme(item)"
                   size="small">选择模板
                 </el-button>
               </div>
@@ -80,7 +67,9 @@
     <div class="site-info" v-else-if="step===3">
       <h3>站点名称</h3>
       <div class="site-name">
-        <el-input placeholder="请输入名称"></el-input>
+        <el-input
+          v-model="siteData.name"
+          placeholder="请输入名称"></el-input>
       </div>
 
       <div class="step-btn">
@@ -102,39 +91,126 @@
   </div>
 </template>
 <script lang="ts">
-    import {defineComponent, ref} from 'vue'
-    import Header from '../Header.vue'
-    import {useRouter} from 'vue-router'
+  import {defineComponent, ref, reactive, onUnmounted} from 'vue'
+  import Header from '../Header.vue'
+  import {useRouter} from 'vue-router'
+  import {setLocalStore, getLocalStore, removeLocalStore} from "@/assets/js/tool";
 
-    export default defineComponent({
-        name: 'create',
-        components: {Header},
-        setup() {
-            const router = useRouter()
-            const step = ref(1)
-            const toNext = (): void => {
-                console.log('toNext')
-                step.value++
-            }
-            const goBack = (): void => {
-                step.value--
-            }
-            const finish = (): void => {
-                router.replace({
-                    name: 'dashboard',
-                    params: {
-                        id: 1
-                    }
-                })
-            }
-            return {
-                step,
-                toNext,
-                goBack,
-                finish
-            }
+  interface Doc {
+    type: string;
+    theme_id: number;
+    name: string;
+    icon: string;
+  }
+
+  interface Theme {
+    name: string;
+    thumbnail: string;
+    id: number;
+  }
+
+  interface DocType {
+    thumbnail: string;
+    type: string;
+    label: string;
+    desc: string;
+  }
+
+  interface SiteData {
+    step: number;
+    site: Doc
+  }
+
+  export default defineComponent({
+    name: 'create',
+    components: {Header},
+    setup() {
+      const router = useRouter()
+      const doc: Doc = {
+        type: '',
+        theme_id: 0,
+        name: '',
+        icon: ''
+      };
+      const data = getLocalStore('siteData') || {step: 1, site: doc};
+      console.log('siteData', data, typeof data, (data as any).step);
+      const step = ref((data as any).step)
+
+      const docTypeList: DocType[] = [
+        {
+          thumbnail: "img/rep.png",
+          type: 'rep',
+          label: '文档',
+          desc: ''
+        },
+        {
+          thumbnail: "/img/blog.png",
+          type: 'blog',
+          label: 'Blog',
+          desc: ''
         }
-    })
+      ]
+      const siteData = reactive((data as any).site);
+      const ThemeList: Theme[] = [{
+        thumbnail: "https://www.baklib.com/templates/help-scout/1/assets/images/1200x750.png",
+        name: '模板名称',
+        id: 1
+      }];
+      const toNext = (): void => {
+        console.log('toNext')
+        step.value++
+      }
+      const goBack = (): void => {
+        step.value--;
+        storeSiteData('siteData');
+      }
+      const finish = (): void => {
+        removeLocalStore('siteData')
+        router.replace({
+          name: 'dashboard',
+          params: {
+            id: 1
+          }
+        })
+      };
+      const storeSiteData = (name: string): void => {
+        let data = {
+          step: step.value,
+          site: siteData
+        }
+        setLocalStore(name, data);
+
+      };
+      const selectedType = (item: Doc): void => {
+        siteData.type = item.type;
+        toNext();
+        storeSiteData('siteData');
+      };
+
+
+      const selectedTheme = (item: Theme): void => {
+        siteData.theme_id = item.id;
+        toNext();
+        storeSiteData('siteData');
+      };
+
+      onUnmounted(() => {
+        removeLocalStore('siteData')
+      });
+      return {
+        step,
+        siteData,
+        docTypeList,
+        ThemeList,
+        toNext,
+        goBack,
+        finish,
+        selectedType,
+        storeSiteData,
+        selectedTheme
+      }
+    }
+  })
 </script>
 
 <style scoped lang="scss">
