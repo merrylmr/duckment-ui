@@ -35,7 +35,7 @@
     import Header from './Header.vue'
     import {defineComponent, onMounted} from 'vue'
     import {useRouter} from 'vue-router'
-    import {getProject} from '@/api/index.js'
+    import {getProject} from '@/api/index.ts'
     interface Site {
         id: number;
         name: string;

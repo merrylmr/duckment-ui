@@ -8,7 +8,7 @@
       <el-step title="完成"></el-step>
     </el-steps>
 
-    <div v-if="step!==1">
+    <div v-if="step!==1 && step!==4">
       <el-button
         class="go-back"
         round
@@ -67,25 +67,43 @@
     <div class="site-info" v-else-if="step===3">
       <h3>站点名称</h3>
       <div class="site-name">
-        <el-input
-          v-model="siteData.name"
-          placeholder="请输入名称"></el-input>
+        <el-form
+          :model="siteData"
+          :rules="rules">
+          <el-form-item prop="name">
+            <el-input
+              v-model="siteData.name"
+              placeholder="请输入名称">
+            </el-input>
+          </el-form-item>
+        </el-form>
       </div>
 
       <div class="step-btn">
-        <el-button round type="primary" @click="toNext">下一步</el-button>
+        <el-button
+          round type="primary"
+          :disabled="!siteData.name"
+          @click="createSite">下一步
+        </el-button>
       </div>
     </div>
     <div class="site-complete" v-else>
-      <div>
-        <img src="/img/success1.png" width="400" alt="">
+      <div
+        v-if="isCreateIng"
+        v-loading="isCreateIng">
+        creating
       </div>
-      <div>
-        <el-button
-          round
-          @click="finish"
-          type="primary">管理站点
-        </el-button>
+      <div v-if="!isCreateIng">
+        <div>
+          <img src="/img/success1.png" width="400" alt="">
+        </div>
+        <div>
+          <el-button
+            round
+            @click="finish"
+            type="primary">管理站点
+          </el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -94,14 +112,9 @@
   import {defineComponent, ref, reactive, onUnmounted} from 'vue'
   import Header from '../Header.vue'
   import {useRouter} from 'vue-router'
-  import {setLocalStore, getLocalStore, removeLocalStore} from "@/assets/js/tool";
-
-  interface Doc {
-    type: string;
-    theme_id: number;
-    name: string;
-    icon: string;
-  }
+  import {setLocalStore, getLocalStore, removeLocalStore} from "@/assets/js/tool"
+  import {Doc} from '@/types/index.d.ts'
+  import {newProject} from '@/api/index.ts'
 
   interface Theme {
     name: string;
@@ -150,19 +163,25 @@
           desc: ''
         }
       ]
-      const siteData = reactive((data as any).site);
+      const siteData = reactive((data as any).site)
       const ThemeList: Theme[] = [{
         thumbnail: "https://www.baklib.com/templates/help-scout/1/assets/images/1200x750.png",
         name: '模板名称',
         id: 1
-      }];
+      }]
+      const rules = {
+        name: [
+          {required: true, message: '名称必填', trigger: ['blur', 'change']},
+        ]
+      }
+      const isCreateIng = ref(false)
       const toNext = (): void => {
         console.log('toNext')
         step.value++
       }
       const goBack = (): void => {
-        step.value--;
-        storeSiteData('siteData');
+        step.value--
+        storeSiteData('siteData')
       }
       const finish = (): void => {
         removeLocalStore('siteData')
@@ -182,32 +201,47 @@
 
       };
       const selectedType = (item: Doc): void => {
-        siteData.type = item.type;
-        toNext();
-        storeSiteData('siteData');
-      };
+        siteData.type = item.type
+        toNext()
+        storeSiteData('siteData')
+      }
 
 
       const selectedTheme = (item: Theme): void => {
-        siteData.theme_id = item.id;
-        toNext();
-        storeSiteData('siteData');
-      };
+        siteData.theme_id = item.id
+        toNext()
+        storeSiteData('siteData')
+      }
 
+      const createSite = async () => {
+        try {
+          toNext()
+          isCreateIng.value = true
+          const res = await newProject(siteData)
+          console.log('res', res)
+          isCreateIng.value = false
+        } catch (err) {
+          isCreateIng.value = false
+          console.error(err)
+        }
+      }
       onUnmounted(() => {
         removeLocalStore('siteData')
-      });
+      })
       return {
         step,
         siteData,
         docTypeList,
         ThemeList,
+        rules,
+        isCreateIng,
         toNext,
         goBack,
         finish,
         selectedType,
         storeSiteData,
-        selectedTheme
+        selectedTheme,
+        createSite
       }
     }
   })
@@ -281,7 +315,7 @@
   .site-name {
     margin-top: 20px;
 
-    /deep/ .el-input__inner {
+    ::v-deep(.el-input__inner ) {
       border: none;
       border-bottom: 1px solid #C0C4CC;
       border-radius: 0;
