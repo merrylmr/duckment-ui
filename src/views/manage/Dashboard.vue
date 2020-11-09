@@ -193,15 +193,4 @@
     font-size: 24px;
   }
 
-  .section {
-    border-radius: 5px;
-    background-color: #fff;
-    color: rgba(0, 0, 0, .87);
-    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .1);
-  }
-
-  .section-title {
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-    padding: 10px;
-  }
 </style>

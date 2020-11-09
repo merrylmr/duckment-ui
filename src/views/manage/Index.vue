@@ -9,7 +9,9 @@
             v-if="!item.isGroup"
             @click="goToUrl(item)"
             class="is-active">
-            <i :class="item.icon"></i>
+            <i
+              class="iconfont"
+              :class="item.icon"></i>
             {{item.label}}
           </zz-menu-item>
           <!--    分组      -->
@@ -25,7 +27,9 @@
                 v-for="cItem in item.sub"
                 :key="cItem.name"
                 @click="goToUrl(cItem)">
-                <i :class="cItem.icon"></i>
+                <i
+                  class="iconfont"
+                  :class="cItem.icon"></i>
                 {{cItem.label}}
               </zz-menu-item>
             </template>
@@ -73,8 +77,8 @@
           sub: [
             {
               name: "general",
-              icon: "el-icon-document",
-              label: "常规"
+              icon: "el-icon-setting",
+              label: "设置"
             },
             {
               name: "content",
@@ -83,7 +87,7 @@
             },
             {
               name: "page",
-              icon: "el-icon-tickets",
+              icon: "icon-iconset0335",
               label: "页面"
             }
           ]
