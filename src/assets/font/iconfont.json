@@ -1,0 +1,30 @@
+{
+  "id": "2190254",
+  "name": "duckment",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "554388",
+      "name": "页面",
+      "font_class": "iconset0335",
+      "unicode": "e6ea",
+      "unicode_decimal": 59114
+    },
+    {
+      "icon_id": "1110451",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "12550606",
+      "name": "页面",
+      "font_class": "yemian",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    }
+  ]
+}

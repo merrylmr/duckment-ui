@@ -6,6 +6,7 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import './assets/scss/index.scss'
+import './assets/font/iconfont.css'
 
 import ElementPlus from 'element-plus'
 // import 'element-plus/lib/theme-chalk/index.css'

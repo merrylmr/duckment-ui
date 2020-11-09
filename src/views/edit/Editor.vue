@@ -7,73 +7,82 @@
         </a>
         <div class="doc-name">文档名</div>
       </div>
+      <div class="edit-header--right">
+        <el-button
+          type="primary"
+          size="small">更新
+        </el-button>
+      </div>
     </div>
 
   </div>
   <div class="edit-body">
-    <div class="edit-nav">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="nav-title">
-            <h3>目录</h3>
-            <el-button round size="mini"
-                       @click="goBack">
-              <i class="el-icon-arrow-left"></i>
-              返回
-            </el-button>
+    <div class="editor-wrapper">
+      <div class="edit-nav">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="nav-title">
+              <h3>目录</h3>
+              <el-button round size="mini"
+                         @click="goBack">
+                <i class="el-icon-arrow-left"></i>
+                返回
+              </el-button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <el-tree
+              :data="data"
+              :default-expand-all="true"
+              :props="defaultProps">
+            </el-tree>
           </div>
         </div>
-        <div class="panel-body">
-          <el-tree
-            :data="data"
-            :default-expand-all="true"
-            :props="defaultProps">
-          </el-tree>
+      </div>
+      <div class="edit-main">
+        <div id="editor"></div>
+      </div>
+      <div class="right-sidebar">
+        <div class="right-sidebar__header">
+          <ul>
+            <li class="func-item"
+                v-for="(item,index) in funItems"
+                :key="index"
+                :class="{'is-active':activeFnc===item.value}"
+                @click="switchFuc(item)">
+              {{item.label}}
+            </li>
+          </ul>
+        </div>
+        <div class="right-sidebar__wrapper">
+          <div class="right-sidebar__body">
+            <el-scrollbar style="calc(100vh -100px)">
+              <div id="outline"
+                   v-show="activeFnc==='outline'">
+
+              </div>
+              <el-form class="settings"
+                       v-show="activeFnc==='attr'">
+                <el-form-item label="标题">
+                  <el-input placeholder="请输入标题"></el-input>
+                </el-form-item>
+                <el-form-item label="简介">
+                  <el-input placeholder="请输入简介"></el-input>
+                </el-form-item>
+                <el-form-item label="URL">
+                  <el-input placeholder="请输入URL"></el-input>
+                </el-form-item>
+                <el-form-item label="布局">
+                  <el-input placeholder="请选择布局"></el-input>
+                </el-form-item>
+              </el-form>
+            </el-scrollbar>
+
+          </div>
         </div>
       </div>
     </div>
-    <div class="edit-main">
-      <div id="editor"></div>
-    </div>
-    <div class="right-sidebar">
-      <div class="right-sidebar__header">
-        <ul>
-          <li class="func-item"
-              v-for="(item,index) in funItems"
-              :key="index"
-              :class="{'is-active':activeFnc===item.value}"
-              @click="switchFuc(item)">
-            {{item.label}}
-          </li>
-        </ul>
-      </div>
-      <div class="right-sidebar__wrapper">
-        <div class="right-sidebar__body">
-          <el-scrollbar style="calc(100vh -100px)">
-            <div id="outline"
-                 v-show="activeFnc==='outline'">
 
-            </div>
-            <el-form class="settings"
-                     v-show="activeFnc==='attr'">
-              <el-form-item label="标题">
-                <el-input placeholder="请输入标题"></el-input>
-              </el-form-item>
-              <el-form-item label="简介">
-                <el-input placeholder="请输入简介"></el-input>
-              </el-form-item>
-              <el-form-item label="URL">
-                <el-input placeholder="请输入URL"></el-input>
-              </el-form-item>
-              <el-form-item label="布局">
-                <el-input placeholder="请选择布局"></el-input>
-              </el-form-item>
-            </el-form>
-          </el-scrollbar>
-
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script lang="ts">
@@ -191,6 +200,7 @@
     display: flex;
     align-items: center;
     height: 100%;
+    justify-content: space-between;
   }
 
   .edit-header--left {
@@ -200,7 +210,12 @@
 
   .edit-body {
     height: calc(100vh - 60px);
+  }
+
+  .editor-wrapper {
+    width: 100%;
     display: flex;
+    max-width: 1920px;
   }
 
   .edit-nav {
